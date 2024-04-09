@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10 questions about Newfoundland & Labrador</title>
+    <style>
+        #title {
+            text-align: center;
+            font-size: 24px;
+            color: blue;
+            margin-top: 20px;
+        }
+        .quiz-container {
+            width: 75%;
+            margin: auto;
+            padding: 20px;
+            height: 100%;
+        }
+        #quiz {
+            background-color: lightblue;
+            padding: 10px;
+            border: 5px solid gold;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        label {
+            display: block;
+            margin: 20px;
+        }
+        button {
+            display: block;
+            margin: auto;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: gold;
+            border: 2px solid black;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        #results {
+            text-align: center;
+            font-size: 20px;
+            color: blue;
+            margin-top: 20px;
+            background-color: yellow;
+            
+        }
+        #message {
+            text-align: center;
+            font-size: 20px;
+            color: red;
+            margin-top: 20px;
+            display: none;
+            background-color: lightyellow;
+            border: 4px solid red;
+        }
+
+    </style>
+</head>
+<div>
+    <!-- Quiz Title -->
+    <h3 id = "title">10 official things of Newfoundland & Labrador Quiz</h3>
+</div>
+<body>
+    <!-- Container for the quiz questions -->
+    <div class="quiz-container" id="quiz"></div>
+    <!-- Submit button for the quiz -->
+    <button id="submit">Submit Quiz</button>
+    <!-- Redo button to refresh the page and restart the quiz -->
+    <button id="redo">Redo Quiz</button>
+    <!-- Container for the quiz results -->
+    <div id="results"></div>
+
+
+    <script>
+        // Get references to the quiz, results, and submit button elements
+        const quizContainer = document.getElementById('quiz');
+        const resultsContainer = document.getElementById('results');
+        const submitButton = document.getElementById('submit');
+
+        // Array of questions and answers
+        const myQuestions = [
+            {
+                question: "#1: What year did Newfoundland and Labrador become a province?",
+                answers: {
+                    A: "1950",
+                    B: "1942",
+                    C: "1949"
+                },
+                correctAnswer: "C"
+            },
+            {
+                question: "#2: What is the capital city of Newfoundland and Labrador?",
+                answers: {
+                    A: "Corner Brook",
+                    B: "St. John's",
+                    C: "Gander"
+                },
+                correctAnswer: "B"
+            },
+            {
+                question: "#3: What is the official flower of Newfoundland and Labrador?",
+                answers: {
+                    A: "Pitcher Plant",
+                    B: "Wild Rose",
+                    C: "Carnations"
+                },
+                correctAnswer: "A"
+            },
+            {
+                question: "#4: What is the official bird of Newfoundland and Labrador?",
+                answers: {
+                    A: "Atlantic Puffin",
+                    B: "Osprey",
+                    C: "Seagull"
+                },
+                correctAnswer: "A"
+            },
+            {
+                question: "#5: What is the official tree of Newfoundland and Labrador?",
+                answers: {
+                    A: "Red Pine",
+                    B: "White Pine",
+                    C: "Black Spruce"
+                },
+                correctAnswer: "C"
+            },
+            {
+                question: "#6: What is the official dog breed of Newfoundland and Labrador?",
+                answers: {
+                    A: "Labrador Retriever",
+                    B: "Newfoundland Dog",
+                    C: "Golden Retriever"
+                },
+                correctAnswer: "B"
+            },
+            {
+                question: "#7: What is the provincial mineral of Newfoundland and Labrador?",
+                answers: {
+                    A: "Iron",
+                    B: "Gold",
+                    C: "Labradorite"
+                },
+                correctAnswer: "C"
+            },
+            {
+                question: "#8: Who was the official 1st Premier of Newfoundland and Labrador?",
+                answers: {
+                    A: "Joey Smallwood",
+                    B: "Frank Moores",
+                    C: "Danny Williams"
+                },
+                correctAnswer: "A"
+            },
+            {
+                question: "#9: What is the official fish of Newfoundland and Labrador?",
+                answers: {
+                    A: "Salmon",
+                    B: "Cod",
+                    C: "Trout"
+                },
+                correctAnswer: "B"
+            },
+            {
+                question: "#10: What is the official game bird of Newfoundland and Labrador?",
+                answers: {
+                    A: "Partridge",
+                    B: "Pheasant",
+                    C: "Grouse"
+                },
+                correctAnswer: "A"
+            }
+        ];
+
+        // Function to display the quiz questions and answers
+        function showQuestions(questions, quizContainer){
+            let output = [];
+            let answers;
+
+            for(let i=0; i<questions.length; i++){
+                answers = [];
+                for(letter in questions[i].answers){
+                    answers.push(
+                        '<label>'
+                            + '<input type="radio" name="question'+i+'" value="'+letter+'">'
+                            + letter + ': '
+                            + questions[i].answers[letter]
+                        + '</label>'
+                    );
+                }
+
+                output.push(
+                    '<div class="question">' + questions[i].question + '</div>'
+                    + '<div class="answers">' + answers.join('') + '</div>'
+                );
+            }
+
+            quizContainer.innerHTML = output.join('');
+        }
+
+        // Function to show the results of the quiz
+        function showResults(questions, quizContainer, resultsContainer){
+            let answerContainers = quizContainer.querySelectorAll('.answers');
+            let userAnswer = '';
+            let numCorrect = 0;
+            let unAnswered = 0;
+
+            for(let i=0; i<questions.length; i++){
+                userAnswer = (answerContainers[i].querySelector('input[name=question'+i+']:checked')||{}).value;
+                if(userAnswer){  
+                    if(userAnswer===questions[i].correctAnswer){
+                        numCorrect++;
+                        answerContainers[i].style.color = 'green';
+                    }
+                    else{
+                        answerContainers[i].style.color = 'red';
+                    }
+                } else {
+                    unAnswered++;
+                }
+            }
+
+            // If there are unanswered questions, displays a message to the user
+            if(unAnswered > 0) {
+                let messageBox = document.getElementById('message');
+                messageBox.style.display = 'block';
+                messageBox.innerHTML = "You have " + unAnswered + " You have unanswered question(s). Please answer all questions.";
+            
+                // Timeout box for the message to disappear after 5 seconds 
+                setTimeout(function(){
+                    messageBox.style.display = 'none';
+                }, 5000);
+            } else {
+                resultsContainer.innerHTML = numCorrect + ' out of ' + questions.length;
+            }
+        } 
+        // Display the quiz questions when the page loads
+        showQuestions(myQuestions, quizContainer);
+        
+        // When the submit button is clicked, I set it to scroll down to the results, by making it scroll 2000px.
+        submitButton.onclick = function(){
+            showResults(myQuestions, quizContainer, resultsContainer);
+            window.scrollTo(0, 2000);
+        }
+
+    // This is for a redo button below the submit button, when pressed it will reload the page and scroll to the top. 
+    const redoButton = document.getElementById('redo');
+
+        redoButton.onclick = function(){
+            location.reload();
+            window.scrollTo(0, 0);
+        }  
+        
+    </script>
+    <!-- Message box for when a user submits a quiz that is not complete -->
+    <div id="message"></div>
+</body>
+</html>
